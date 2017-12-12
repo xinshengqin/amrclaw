@@ -201,17 +201,19 @@ subroutine advanc(level,nvar,dtlevnew,vtime,naux)
         call take_cpu_timer('qad', timer_qad)
         call cpu_timer_start(timer_qad)
 #endif
-        ! We need a synchronization here since kernels launched
-        ! earlier might still be using fflux
-        call wait_for_all_gpu_tasks(device_id)
         if (associated(fflux(mptr)%ptr)) then
             lenbc  = 2*(nx/intratx(level-1)+ny/intraty(level-1))
             locsvq = 1 + nvar*lenbc
             locx1d = locsvq + nvar*lenbc
+
+            istat = cudaMemcpy(fflux(mptr)%ptr, fflux_d(mptr)%ptr, nvar*lenbc*2+naux*lenbc)
+
             call qad(alloc(locnew),mitot,mjtot,nvar, &
                      fflux(mptr)%ptr,fflux(mptr)%ptr(locsvq),lenbc, &
                      intratx(level-1),intraty(level-1),hx,hy, &
                      naux,alloc(locaux),fflux(mptr)%ptr(locx1d),delt,mptr)
+
+            istat = cudaMemcpy(fflux_d(mptr)%ptr, fflux(mptr)%ptr, nvar*lenbc*2+naux*lenbc)
         endif
 #ifdef PROFILE
         call cpu_timer_stop(timer_qad)
@@ -307,19 +309,14 @@ subroutine advanc(level,nvar,dtlevnew,vtime,naux)
         mitot  = nx + 2*nghost
         mjtot  = ny + 2*nghost
         if (associated(cflux(mptr)%ptr)) then
-
             call compute_kernel_size(numBlocks,numThreads,1,listsp(level))
-
             call fluxsv_gpu<<<numBlocks,numThreads,0,get_cuda_stream(id,device_id)>>>(mptr, &
                      fms_d(mptr)%ptr,fps_d(mptr)%ptr,gms_d(mptr)%ptr,gps_d(mptr)%ptr, &
                      cflux_d(mptr)%ptr, &
-                     fflux, &
+                     fflux_d, &
                      mitot,mjtot,nvar,listsp(level),delt,hx,hy)
         endif
     
-        ! We need a synchronization here since kernels launched
-        ! earlier might still be using fflux
-        call wait_for_all_gpu_tasks(device_id)
         if (associated(fflux(mptr)%ptr)) then
             lenbc = 2*(nx/intratx(level-1)+ny/intraty(level-1))
             call compute_kernel_size(numBlocks, numThreads,1,lenbc)
@@ -327,7 +324,8 @@ subroutine advanc(level,nvar,dtlevnew,vtime,naux)
                 fms_d(mptr)%ptr,fps_d(mptr)%ptr,gms_d(mptr)%ptr,gps_d(mptr)%ptr, &
                 nghost, nx, ny, lenbc, &
                 intratx(level-1), intraty(level-1), &
-                fflux(mptr)%ptr, delt, hx, hy)
+                fflux_d(mptr)%ptr, delt, hx, hy)
+            istat = cudaMemcpy(fflux(mptr)%ptr, fflux_d(mptr)%ptr, nvar*lenbc*2+naux*lenbc)
         endif
     enddo
 

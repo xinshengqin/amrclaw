@@ -14,11 +14,17 @@ c  ================================================================
 c  ================================================================
 c
       use amr_module
+#ifdef CUDA
+      use cudafor, only: cudaMemcpy
+#endif
       implicit double precision (a-h,o-z)
       
       logical sticksout, found
 !     make fliparray largest possible grid size
       dimension fliparray(2*max1d*nghost*(nvar+naux))
+#ifdef CUDA
+      integer :: istat
+#endif
 c
 c ::::::::::::::::::::::::: SAVEQC :::::::::::::::::::::::::::::::::
 c  prepare new fine grids to save fluxes after each integration step
@@ -105,6 +111,9 @@ c         make coarsened enlarged patch for conservative fixup
      .                fflux(mkid)%ptr(1+nvar*lenbc),
      .                lenbc,naux,alloc(loctx),
      .                fflux(mkid)%ptr(1+2*nvar*lenbc))
+
+          istat = cudaMemcpy(fflux_d(mkid)%ptr, fflux(mkid)%ptr, 
+     .        nvar*lenbc*2+naux*lenbc)
 #else
           call cstore(alloc(loctmp),nrow,ncol,nvar,
      .                alloc(ist+nvar*lenbc),lenbc,naux,alloc(loctx),

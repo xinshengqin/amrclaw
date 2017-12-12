@@ -211,33 +211,34 @@ module amr_module
             numgrids(maxlv),numcells(maxlv), &
             iorder,mxnest,kcheck
 #ifdef CUDA
-    type managed_real_ptr_type
-        sequence
-        double precision, dimension(:), pointer, contiguous, managed :: ptr=>null()
-    end type managed_real_ptr_type
-    
     type cpu_2d_int_ptr_type
-        sequence
         integer, dimension(:,:), pointer, contiguous :: ptr=>null()
     end type cpu_2d_int_ptr_type
 
     type gpu_2d_int_ptr_type
-        sequence
         integer, dimension(:,:), pointer, contiguous, device :: ptr=>null()
     end type gpu_2d_int_ptr_type
 
+    type cpu_1d_real_ptr_type
+        double precision, dimension(:), pointer, contiguous :: ptr=>null()
+    end type cpu_1d_real_ptr_type
+
     type cpu_3d_real_ptr_type
-        sequence
         double precision, dimension(:,:,:), pointer, contiguous :: ptr=>null()
     end type cpu_3d_real_ptr_type
 
+    type gpu_1d_real_ptr_type
+        double precision, dimension(:), pointer, contiguous, device :: ptr=>null()
+    end type gpu_1d_real_ptr_type
+
     type gpu_3d_real_ptr_type
-        sequence
         double precision, dimension(:,:,:), pointer, contiguous, device :: ptr=>null()
     end type gpu_3d_real_ptr_type
 
 
-    type(managed_real_ptr_type), allocatable, managed ::   fflux(:)
+    type(cpu_1d_real_ptr_type), allocatable :: fflux(:)
+    type(gpu_1d_real_ptr_type), allocatable, managed :: fflux_d(:)
+
     type(cpu_2d_int_ptr_type) ::   cflux(maxgr)
     type(gpu_2d_int_ptr_type) :: cflux_d(maxgr)
 

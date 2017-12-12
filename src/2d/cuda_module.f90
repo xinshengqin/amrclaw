@@ -2,7 +2,7 @@
 module cuda_module
 
     use cudafor, only: cuda_stream_kind, cudaEvent, dim3
-    use amr_module, only: inunit, maxgr, fflux
+    use amr_module, only: inunit, maxgr, fflux, fflux_d
     use memory_module, only: clawpack_mempool_init
 
     implicit none
@@ -101,6 +101,8 @@ contains
         call clawpack_mempool_init()
 
         allocate(fflux(maxgr))
+        allocate(fflux_d(maxgr))
+
         n_timer = 0
 
     end subroutine initialize_cuda
@@ -388,6 +390,7 @@ contains
 
     subroutine finalize_cuda() 
         deallocate(fflux)
+        deallocate(fflux_d)
     end subroutine finalize_cuda
 
     function get_num_devices_used() result(nDev) bind(C, name='get_num_devices_used')
