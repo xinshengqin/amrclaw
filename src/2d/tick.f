@@ -7,6 +7,7 @@ c
       use amr_module
       use gauges_module, only: setbestsrc, num_gauges
       use gauges_module, only: print_gauges_and_reset_nextLoc 
+      use timer_module
 
       implicit double precision (a-h,o-z)
 c     include  "call.i"
@@ -47,6 +48,8 @@ c ::::::::::::::::::::::::::::::::::::;::::::::::::::::::::::::::
 c
       call system_clock(tick_clock_start,tick_clock_rate)
       call cpu_time(tick_cpu_start)
+      call take_cpu_timer("Total run time", timer_total_run_time)
+      call cpu_timer_start(timer_total_run_time)
 
 
       ncycle         = nstart
@@ -292,7 +295,10 @@ c                   adjust time steps for this and finer levels
               else
                  level = level - 1
                  call system_clock(clock_start,clock_rate)
+                 call take_cpu_timer('updating', timer_updating)
+                 call cpu_timer_start(timer_updating)
                  call update(level,nvar,naux)
+                 call cpu_timer_stop(timer_updating)
                  call system_clock(clock_finish,clock_rate)
                  timeUpdating=timeUpdating+clock_finish-clock_start
               endif
@@ -305,7 +311,10 @@ c
  110      continue
           time    = time   + possk(1)
           ncycle  = ncycle + 1
+          call take_cpu_timer('conservation check', timer_conck)
+          call cpu_timer_start(timer_conck)
           call conck(1,nvar,naux,time,rest)
+          call cpu_timer_stop(timer_conck)
 
       if ( vtime) then
 c
@@ -364,6 +373,7 @@ c
 
 c ## tick timing moved here so can be saved in checkpoint file 
 c
+      call cpu_timer_stop(timer_total_run_time)
       call system_clock(tick_clock_finish,tick_clock_rate)
       call cpu_time(tick_cpu_finish)
       timeTick = timeTick + tick_clock_finish - tick_clock_start 

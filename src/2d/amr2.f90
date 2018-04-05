@@ -93,6 +93,7 @@ program amr2
 
     use regions_module, only: set_regions
     use gauges_module, only: set_gauges, num_gauges
+    use timer_module
 
 #ifdef HDF5
     use hdf5
@@ -751,6 +752,8 @@ program amr2
     write(*,*)
     write(timing_unit,*)
     close(timing_unit)
+
+    call print_all_cpu_timers()
 
     ! Done with computation, cleanup:
     lentotsave = lentot
