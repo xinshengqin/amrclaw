@@ -1,6 +1,6 @@
 c
 !> Check each grid, starting with **mptr1** (either newstl or lstart)
-!! to see that it has no more than max1d points in either dimensions.
+!! to see that it has no more than maxd points in either dimensions.
 !! needed so that scratch array space in stepgrid not exceeded.
 !!
 !! Also check for too small grids - but has never happened.
@@ -10,13 +10,13 @@ c
       subroutine birect(mptr1)
 c
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
 c
 c :::::::::::::  BIRECT :::::::::::::::::::::::::::::::::::::::
 c check each grid, starting with mptr1 (either newstl or lstart)
-c to see that it has no more than max1d points in either dimensions.
+c to see that it has no more than maxd points in either dimensions.
 c needed so that scratch array space in stepgrid not exceeded.
 c
 c also check for too small grids - but has never happened.
@@ -41,7 +41,7 @@ c line down the middle. make sure new grid corners are anchored
 c on coarse grid point. make sure if bisecting coarse grid that
 c new grids have even number of points
 c
-      if (nx + 2*nghost .gt. max1d) then
+      if (nx + 2*nghost .gt. maxd) then
  
         nxl    = nx/2
         if (level .gt. 1) then 
@@ -76,7 +76,7 @@ c
 c check number of columns next - if too many, bisect grid with horizontal
 c line down the middle
 c
-      else if (ny + 2*nghost .gt. max1d) then
+      else if (ny + 2*nghost .gt. maxd) then
  
         nyl    = ny/2
         if (level .gt. 1) then 

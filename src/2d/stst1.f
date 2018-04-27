@@ -4,7 +4,7 @@ c
       subroutine stst1
 c
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
 c
@@ -98,7 +98,7 @@ c
       subroutine initTimers()
 
       use amr_module
-      !implicit double precision (a-h,o-z)
+      !implicit real(CLAW_REAL) (a-h,o-z)
 
       timeBufnst         = 0
       timeStepgrid       = 0

@@ -9,7 +9,7 @@ c
       use gauges_module, only: print_gauges_and_reset_nextLoc 
       use timer_module
 
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 c     include  "call.i"
 
       logical    vtime, dumpout/.false./, dumpchk/.false./
@@ -262,7 +262,7 @@ c
 c done with a level of integration. update counts, decide who next.
 c
           ntogo(level)  = ntogo(level) - 1
-          dtnew(level)  = dmin1(dtnew(level),dtlevnew)
+          dtnew(level)  = min(dtnew(level),dtlevnew)
           tlevel(level) = tlevel(level) + possk(level)
           icheck(level) = icheck(level) + 1
 c

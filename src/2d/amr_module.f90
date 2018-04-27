@@ -167,8 +167,8 @@ module amr_module
     real(kind=8), parameter :: DOFLAG  = 2.0
     real(kind=8), parameter :: badpro = 3.0
 
-    real(kind=8), parameter :: NEEDS_TO_BE_SET = 10.e33
-    real(kind=8), parameter :: rinfinity = 10.e32
+    real(CLAW_REAL), parameter :: NEEDS_TO_BE_SET = 10.e33
+    real(CLAW_REAL), parameter :: rinfinity = 10.e32
     integer, parameter :: iinfinity = 999999999
     integer, parameter :: horizontal = 1
     integer, parameter :: vertical = 2
@@ -224,9 +224,9 @@ module amr_module
     ! common  /calloc/   alloc(memsize)
 
     ! Dynamic memory: 
-    !real(kind=8), allocatable, target, dimension(:) :: storage
-    !real(kind=8), pointer, dimension(:) :: alloc   ! old way, changed mjb Sept. 2014
-    real(kind=8), allocatable, dimension(:) :: alloc    ! new way, use allocatable, not pointer
+    !real(CLAW_REAL), allocatable, target, dimension(:) :: storage
+    !real(CLAW_REAL), pointer, dimension(:) :: alloc   ! old way, changed mjb Sept. 2014
+    real(CLAW_REAL), allocatable, dimension(:) :: alloc    ! new way, use allocatable, not pointer
     integer memsize
        
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\
@@ -239,13 +239,13 @@ module amr_module
     ! :::::  domain description variables
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     logical xperdom, yperdom, spheredom
-    real(kind=8) :: xupper, yupper, xlower, ylower
+    real(CLAW_REAL) :: xupper, yupper, xlower, ylower
     integer :: nghost, mthbc(4)
 
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     ! :::::  collect stats
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    real(kind=8)  rvoll(maxlv),evol,rvol,avenumgrids(maxlv)
+    real(CLAW_REAL)  rvoll(maxlv),evol,rvol,avenumgrids(maxlv)
     integer ::  iregridcount(maxlv), tvoll(maxlv)
     integer :: timeRegridding, timeUpdating, timeValout
     integer :: timeFlglvl,timeGrdfit2,timeGrdfit3,timeGrdfitAll
@@ -263,7 +263,7 @@ module amr_module
     character(len=10), allocatable :: auxtype(:)
     integer  method(7), mwaves, mcapa, dimensional_split
     integer, allocatable :: mthlim(:)
-    real(kind=8) cfl,cflmax,cflv1,cfl_level
+    real(CLAW_REAL) cfl,cflmax,cflv1,cfl_level
 
     logical :: use_fwaves
     logical :: flag_richardson,flag_gradient
@@ -275,13 +275,13 @@ module amr_module
     logical    printout,matlabout,ncarout
 
     ! variables for conservation checking:
-    real(kind=8) tmass0
+    real(CLAW_REAL) tmass0
 
     ! variables for specifying output format
     integer :: output_style, nstop, nout, iout
-    real(kind=8), allocatable :: tout(:)
-    real(kind=8) :: t0, tfinal
-    real(kind=8) :: tstart_thisrun  ! /= t0 in case of restart
+    real(CLAW_REAL), allocatable :: tout(:)
+    real(CLAW_REAL) :: t0, tfinal
+    real(CLAW_REAL) :: tstart_thisrun  ! /= t0 in case of restart
     integer :: nq_components, naux_components, output_format
     integer, allocatable :: output_q_components(:)
     integer, allocatable :: output_aux_components(:)
@@ -289,7 +289,7 @@ module amr_module
 
     ! checkpointing:
     integer :: checkpt_style, nchkpt, checkpt_interval
-    real(kind=8), allocatable :: tchk(:)
+    real(CLAW_REAL), allocatable :: tchk(:)
 
     integer :: matlabu
 

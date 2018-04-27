@@ -60,10 +60,10 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
 
     ! Subroutine arguments
     integer, intent(in) :: mx,my,mbc,meqn,maux,level,mbuff
-    real(kind=8), intent(in) :: xlower,ylower,dx,dy,t,tolsp
+    real(CLAW_REAL), intent(in) :: xlower,ylower,dx,dy,t,tolsp
     
-    real(kind=8), intent(in) :: q(meqn,1-mbc:mx+mbc,1-mbc:my+mbc)
-    real(kind=8), intent(in) :: aux(maux,1-mbc:mx+mbc,1-mbc:my+mbc)
+    real(CLAW_REAL), intent(in) :: q(meqn,1-mbc:mx+mbc,1-mbc:my+mbc)
+    real(CLAW_REAL), intent(in) :: aux(maux,1-mbc:mx+mbc,1-mbc:my+mbc)
     
     ! Flagging
     real(kind=8),intent(inout) :: amrflags(1-mbuff:mx+mbuff,1-mbuff:my+mbuff)
@@ -73,8 +73,8 @@ subroutine flag2refine2(mx,my,mbc,mbuff,meqn,maux,xlower,ylower,dx,dy,t,level, &
 
     ! Locals
     integer :: i,j,m
-    real(kind=8) :: x_c,y_c,x_low,y_low,x_hi,y_hi
-    real(kind=8) :: dqi(meqn), dqj(meqn), dq(meqn)
+    real(CLAW_REAL) :: x_c,y_c,x_low,y_low,x_hi,y_hi
+    real(CLAW_REAL) :: dqi(meqn), dqj(meqn), dq(meqn)
 
     ! Don't initialize flags, since they were already 
     ! flagged by flagregions2

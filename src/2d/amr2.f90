@@ -64,7 +64,7 @@ program amr2
     use amr_module, only: checkpt_style, checkpt_interval, tchk, nchkpt
     use amr_module, only: rstfile, check_a
 
-    use amr_module, only: max1d, maxvar, maxlv
+    use amr_module, only: maxd, maxvar, maxlv
 
     use amr_module, only: method, mthlim, use_fwaves, numgrids
     use amr_module, only: nghost, mwaves, mcapa, auxtype, dimensional_split
@@ -106,12 +106,12 @@ program amr2
     integer :: ndim, nvar, naux, mcapa1, mindim
     integer :: nstart, nsteps, nv1, nx, ny, lentotsave, num_gauge_SAVE
     integer :: omp_get_max_threads, maxthreads
-    real(kind=8) :: time, ratmet, cut, dtinit, dt_max
+    real(CLAW_REAL) :: time, ratmet, cut, dtinit, dt_max
     logical :: vtime, rest, output_t0    
 
     ! Timing variables
     integer ::  ttotal
-    real(kind=8) ::ttotalcpu, cpu_start,cpu_finish 
+    real(CLAW_REAL) ::ttotalcpu, cpu_start,cpu_finish 
     integer :: clock_start, clock_finish, clock_rate
     integer, parameter :: timing_unit = 48
     character(len=256) :: timing_line, timing_substr
@@ -127,7 +127,7 @@ program amr2
 #endif
 
     ! Common block variables
-    real(kind=8) :: dxmin, dymin
+    real(CLAW_REAL) :: dxmin, dymin
 
     common /comfine/ dxmin,dymin
 
@@ -205,7 +205,7 @@ program amr2
     if ((output_style == 1) .and. (nout > 0)) then
         allocate(tout(nout))
         do i=1,nout
-            tout(i) = t0 + i * (tfinal - t0) / real(nout,kind=8)
+            tout(i) = t0 + i * (tfinal - t0) / real(nout,kind=CLAW_REAL)
         enddo
     endif
 
@@ -355,12 +355,12 @@ program amr2
     read(inunit,*)
 
     do i=1,mxnest-1
-        if ((intratx(i) > max1d) .or. (intraty(i) > max1d)) then 
+        if ((intratx(i) > maxd) .or. (intraty(i) > maxd)) then 
             print *, ""
             format_string = "(' *** Error: Refinement ratios must be no " // &
-                            "larger than max1d = ',i5,/,'     (set max1d" // &
+                            "larger than maxd = ',i5,/,'     (set maxd" // &
                             " in amr_module.f90)')"
-            print format_string, max1d
+            print format_string, maxd
             stop
         endif
     enddo
@@ -656,18 +656,18 @@ program amr2
     do level=1,mxnest
         format_string="(i3,'           ',1f15.3,'        ',1f15.3,'    ', e17.3)"
         write(timing_unit,format_string) level, &
-             real(tvoll(level),kind=8) / real(clock_rate,kind=8), tvollCPU(level), rvoll(level)
+             real(tvoll(level),kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), tvollCPU(level), rvoll(level)
         write(*,format_string) level, &
-             real(tvoll(level),kind=8) / real(clock_rate,kind=8), tvollCPU(level), rvoll(level)
+             real(tvoll(level),kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), tvollCPU(level), rvoll(level)
         ttotalcpu=ttotalcpu+tvollCPU(level)
         ttotal=ttotal+tvoll(level)
     end do
     
     format_string="('total         ',1f15.3,'        ',1f15.3,'    ', e17.3)"
     write(timing_unit,format_string) &
-             real(ttotal,kind=8) / real(clock_rate,kind=8), ttotalCPU, rvol
+             real(ttotal,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), ttotalCPU, rvol
     write(*,format_string) &
-             real(ttotal,kind=8) / real(clock_rate,kind=8), ttotalCPU, rvol
+             real(ttotal,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), ttotalCPU, rvol
     
     write(*,*)
     write(timing_unit,*)
@@ -680,30 +680,30 @@ program amr2
     !stepgrid
     format_string="('stepgrid      ',1f15.3,'        ',1f15.3,'    ',e17.3)"
     write(timing_unit,format_string) &
-         real(timeStepgrid,kind=8) / real(clock_rate,kind=8), timeStepgridCPU
+         real(timeStepgrid,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeStepgridCPU
     write(*,format_string) &
-         real(timeStepgrid,kind=8) / real(clock_rate,kind=8), timeStepgridCPU
+         real(timeStepgrid,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeStepgridCPU
     
     !bound
     format_string="('BC/ghost cells',1f15.3,'        ',1f15.3)"
     write(timing_unit,format_string) &
-         real(timeBound,kind=8) / real(clock_rate,kind=8), timeBoundCPU
+         real(timeBound,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeBoundCPU
     write(*,format_string) &
-         real(timeBound,kind=8) / real(clock_rate,kind=8), timeBoundCPU
+         real(timeBound,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeBoundCPU
     
     !regridding time
     format_string="('Regridding    ',1f15.3,'        ',1f15.3,'  ')"
     write(timing_unit,format_string) &
-            real(timeRegridding,kind=8) / real(clock_rate,kind=8), timeRegriddingCPU
+            real(timeRegridding,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeRegriddingCPU
     write(*,format_string) &
-            real(timeRegridding,kind=8) / real(clock_rate,kind=8), timeRegriddingCPU
+            real(timeRegridding,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeRegriddingCPU
     
     !output time
     format_string="('Output (valout)',1f14.3,'        ',1f15.3,'  ')"
     write(timing_unit,format_string) &
-            real(timeValout,kind=8) / real(clock_rate,kind=8), timeValoutCPU
+            real(timeValout,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeValoutCPU
     write(*,format_string) &
-            real(timeValout,kind=8) / real(clock_rate,kind=8), timeValoutCPU
+            real(timeValout,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), timeValoutCPU
     
     write(*,*)
     write(timing_unit,*)
@@ -712,11 +712,11 @@ program amr2
     format_string="('Total time:   ',1f15.3,'        ',1f15.3,'  ')"
 
 !    write(*,format_string)  &
-!            real(clock_finish - clock_start,kind=8) / real(clock_rate,kind=8), &
+!            real(clock_finish - clock_start,kind=CLAW_REAL) / real(clock_rate,kind=CLAW_REAL), &
 !            cpu_finish-cpu_start
-    write(*,format_string) real(timeTick,kind=8)/real(clock_rate,kind=8), &
+    write(*,format_string) real(timeTick,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL), &
             timeTickCPU
-    write(timing_unit,format_string) real(timeTick,kind=8)/real(clock_rate,kind=8), &
+    write(timing_unit,format_string) real(timeTick,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL), &
             timeTickCPU
     
     format_string="('Using',i3,' thread(s)')"
