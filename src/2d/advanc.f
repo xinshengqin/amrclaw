@@ -11,6 +11,7 @@ c
 c
       use amr_module
       implicit real(CLAW_REAL) (a-h,o-z)
+      use timer_module
 
 
       logical    vtime
@@ -89,11 +90,14 @@ c
       
 c
 c save coarse level values if there is a finer level for wave fixup
+      call take_cpu_timer('saveqc', timer_saveqc)
+      call cpu_timer_start(timer_saveqc)
       if (level+1 .le. mxnest) then
          if (lstart(level+1) .ne. null) then
             call saveqc(level+1,nvar,naux)
          endif
       endif
+      call cpu_timer_stop(timer_saveqc)
 c
       dtlevnew = rinfinity
       cfl_level = 0.d0    !# to keep track of max cfl seen on each level

@@ -93,6 +93,7 @@ program amr2
 
     use regions_module, only: set_regions
     use gauges_module, only: set_gauges, num_gauges
+    use timer_module
 
     implicit none
 
@@ -706,6 +707,8 @@ program amr2
     write(*,format_string)
     write(*,*)
     write(outunit,*)
+
+    call print_all_cpu_timers()
 
     ! Done with computation, cleanup:
     lentotsave = lentot
