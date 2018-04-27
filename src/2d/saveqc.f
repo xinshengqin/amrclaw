@@ -14,11 +14,11 @@ c  ================================================================
 c  ================================================================
 c
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
       
       logical sticksout, found
 !     make fliparray largest possible grid size
-      dimension fliparray(2*max1d*nghost*(nvar+naux))
+      dimension fliparray(2*maxd*nghost*(nvar+naux))
 c
 c ::::::::::::::::::::::::: SAVEQC :::::::::::::::::::::::::::::::::
 c  prepare new fine grids to save fluxes after each integration step

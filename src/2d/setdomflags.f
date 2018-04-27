@@ -74,7 +74,7 @@ c        so that dont have entire base grid upscaled
 
 c
 c  3.  loop over all intersecting grids at base level staying fixed
-c      to make the proper nesting dodmain.
+c      to make the proper nesting domaxin.
 c      set the buffer zone in igridflags to 1 if nested 
 c      this is so when shrink by one you dont lose too much area.
 c

@@ -10,7 +10,7 @@ c
 c     # Set initial conditions for q.
 c     # Acoustics with smooth radially symmetric profile to test accuracy
 c
-       implicit double precision (a-h,o-z)
+       implicit real(CLAW_REAL) (a-h,o-z)
        dimension q(meqn,1-mbc:mx+mbc, 1-mbc:my+mbc)
        dimension aux(maux,1-mbc:mx+mbc, 1-mbc:my+mbc)
 c

@@ -29,7 +29,7 @@ c     # the left or right.  The norm of the projections onto the wave are then
 c     # given by dotl/wnorm2 and dotr/wnorm2, where wnorm2 is the 2-norm
 c     # of wave.
 c
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
       dimension mthlim(mwaves)
       dimension wave(meqn, mwaves, 1-mbc:maxm+mbc)
       dimension    s(mwaves, 1-mbc:maxm+mbc)
@@ -61,21 +61,21 @@ c
 c           --------
 c           # minmod
 c           --------
-            wlimitr = dmax1(0.d0, dmin1(1.d0, r))
+            wlimitr = max(0.d0, min(1.d0, r))
             go to 170
 c
    20       continue
 c           ----------
 c           # superbee
 c           ----------
-            wlimitr = dmax1(0.d0, dmin1(1.d0, 2.d0*r), dmin1(2.d0, r))
+            wlimitr = max(0.d0, min(1.d0, 2.d0*r), min(2.d0, r))
             go to 170
 c
    30       continue
 c           ----------
 c           # van Leer
 c           ----------
-            wlimitr = (r + dabs(r)) / (1.d0 + dabs(r))
+            wlimitr = (r + abs(r)) / (1.d0 + abs(r))
             go to 170
 c
    40       continue
@@ -83,7 +83,7 @@ c           ------------------------------
 c           # monotinized centered
 c           ------------------------------
             c = (1.d0 + r)/2.d0
-            wlimitr = dmax1(0.d0, dmin1(c, 2.d0, 2.d0*r))
+            wlimitr = max(0.d0, min(c, 2.d0, 2.d0*r))
             go to 170
 c
    50       continue

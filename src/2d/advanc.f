@@ -10,7 +10,7 @@ c
       subroutine advanc (level,nvar,dtlevnew,vtime,naux)
 c
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
       logical    vtime
@@ -19,9 +19,9 @@ c
       integer listgrids(numgrids(level))
       integer clock_start, clock_finish, clock_rate
       integer clock_startStepgrid,clock_startBound,clock_finishBound
-      real(kind=8) cpu_start, cpu_finish
-      real(kind=8) cpu_startBound, cpu_finishBound
-      real(kind=8) cpu_startStepgrid, cpu_finishStepgrid
+      real(CLAW_REAL) cpu_start, cpu_finish
+      real(CLAW_REAL) cpu_startBound, cpu_finishBound
+      real(CLAW_REAL) cpu_startStepgrid, cpu_finishStepgrid
 
 c     maxgr is maximum number of grids  many things are
 c     dimensioned at, so this is overall. only 1d array
@@ -122,7 +122,7 @@ c
 c
           call par_advanc(mptr,mitot,mjtot,nvar,naux,dtnew)
 !$OMP CRITICAL (newdt)
-          dtlevnew = dmin1(dtlevnew,dtnew)
+          dtlevnew = min(dtlevnew,dtnew)
 !$OMP END CRITICAL (newdt)    
 
       end do
@@ -135,7 +135,7 @@ c
       timeStepgrid = timeStepgrid +clock_finish-clock_startStepgrid
       timeStepgridCPU=timeStepgridCPU+cpu_finish-cpu_startStepgrid      
       
-      cflmax = dmax1(cflmax, cfl_level)
+      cflmax = max(cflmax, cfl_level)
 
 c
       return
@@ -146,7 +146,7 @@ c
        subroutine prepgrids(listgrids, num, level)
 
        use amr_module
-       implicit double precision (a-h,o-z)
+       implicit real(CLAW_REAL) (a-h,o-z)
        integer listgrids(num)
 
        mptr = lstart(level)
@@ -171,14 +171,14 @@ c
 c
       use amr_module
       use gauges_module, only: update_gauges, num_gauges
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
       integer omp_get_thread_num, omp_get_max_threads
       integer mythread/0/, maxthreads/1/
 
-      double precision fp(nvar,mitot,mjtot),fm(nvar,mitot,mjtot)
-      double precision gp(nvar,mitot,mjtot),gm(nvar,mitot,mjtot)
+      real(CLAW_REAL) fp(nvar,mitot,mjtot),fm(nvar,mitot,mjtot)
+      real(CLAW_REAL) gp(nvar,mitot,mjtot),gm(nvar,mitot,mjtot)
 
 
 c

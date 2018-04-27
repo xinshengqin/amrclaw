@@ -5,7 +5,7 @@ c
      .                        valbig,auxbig)
 
        use amr_module
-       implicit double precision (a-h,o-z)
+       implicit real(CLAW_REAL) (a-h,o-z)
 
        dimension fp(nvar,mitot,mjtot),gp(nvar,mitot,mjtot)
        dimension fm(nvar,mitot,mjtot),gm(nvar,mitot,mjtot)

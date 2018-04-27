@@ -24,7 +24,7 @@ c     =====================================================
 c     =====================================================
 c
 c
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
       dimension mthlim(mwaves)
       dimension wave(meqn, mwaves, 1-mbc:maxm+mbc)
       dimension    s(mwaves, 1-mbc:maxm+mbc)

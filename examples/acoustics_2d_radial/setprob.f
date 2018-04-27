@@ -1,5 +1,5 @@
       subroutine setprob
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
       character*25 fname
       common /cparam/ rho,bulk,cc,zz
 

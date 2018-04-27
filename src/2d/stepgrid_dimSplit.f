@@ -28,10 +28,10 @@ c
 c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
       external rpn2
 
-      parameter (msize=max1d+4)
+      parameter (msize=maxd+4)
       parameter (mwork=msize*(maxvar*maxvar + 13*maxvar + 3*maxaux +2))
 
       dimension q(nvar,mitot,mjtot)
@@ -80,7 +80,7 @@ c                                   1.  First step in x direction:
 c
 !$OMP  CRITICAL (cflm)
 
-        cfl_level = dmax1(cfl_level,cflgrid)
+        cfl_level = max(cfl_level,cflgrid)
 
 !$OMP END CRITICAL (cflm)
 
@@ -110,7 +110,7 @@ c                                 2.  Second step in x direction:
 c
 !$OMP  CRITICAL (cflm)
 
-        cfl_level = dmax1(cfl_level,cflgrid)
+        cfl_level = max(cfl_level,cflgrid)
 
 !$OMP END CRITICAL (cflm)
 c

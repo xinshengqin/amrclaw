@@ -23,7 +23,7 @@
       subroutine bufnst2(nvar,naux,numbad,lcheck,lbase)
 !
       use amr_module
-      implicit double precision (a-h,o-z)
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
       logical    vtime
@@ -169,7 +169,11 @@
 
 ! ADD WORK THAT USED TO BE IN FLGLVL2 FOR MORE PARALLEL WORK WITHOUT JOINING AND SPAWNING AGAIN
 ! in effect this is domgrid, but since variables already defined just need half of it, inserted here
+#if (CLAW_REAL == 8) 
       ibytesPerDP = 8      
+#else
+      ibytesPerDP = 4      
+#endif
 !     bad names, for historical reasons. they are both smae size now
       ! recall that igetsp(1) will allocate 8 bytes
       locdomflags = igetsp( (mibuff*mjbuff)/ibytesPerDP+1)
