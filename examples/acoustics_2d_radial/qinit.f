@@ -21,7 +21,7 @@ c
           xcell = xlower + (i-0.5d0)*dx
           do 20 j=1,my
              ycell = ylower + (j-0.5d0)*dy
-             r = dsqrt(xcell**2 + ycell**2)
+             r = sqrt(xcell**2 + ycell**2)
 
              if (dabs(r-0.5d0) .le. width) then
                  pressure = 1.d0 + dcos(pi*(r - 0.5d0)/width)

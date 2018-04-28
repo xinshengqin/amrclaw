@@ -13,6 +13,8 @@ c
       use timer_module
       implicit real(CLAW_REAL) (a-h,o-z)
 
+      implicit real(CLAW_REAL) (a-h,o-z)
+
 
       logical    vtime
       integer omp_get_thread_num, omp_get_max_threads

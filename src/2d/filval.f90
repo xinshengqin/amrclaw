@@ -154,14 +154,14 @@ subroutine filval(val, mitot, mjtot, dx, dy, level, time,  mic,          &
             s1p = valc(ivar,i+1,j) - valc(ivar,i,j)
             s1m = valc(ivar,i,j)   - valc(ivar,i-1,j)
             slopex = min(abs(s1p), abs(s1m)) &
-                         * sign(1.d0,valc(ivar,i+1,j) - valc(ivar,i-1,j))
+                         * sign(real(1.d0,kind=CLAW_REAL),valc(ivar,i+1,j) - valc(ivar,i-1,j))
             ! if there's a sign change, set slope to 0.
             if ( s1m*s1p <=  0.d0) slopex = 0.d0
 
             s1p = valc(ivar,i,j+1) - valc(ivar,i,j)
             s1m = valc(ivar,i,j)   - valc(ivar,i,j-1)
             slopey = min(abs(s1p), abs(s1m))  &
-                         * sign(1.0d0, valc(ivar,i,j+1) - valc(ivar,i,j-1))
+                         * sign(real(1.d0,kind=CLAW_REAL), valc(ivar,i,j+1) - valc(ivar,i,j-1))
             if ( s1m*s1p <= 0.d0)  slopey = 0.d0
 
             ! Interpolate from coarse cells to fine grid to find depth

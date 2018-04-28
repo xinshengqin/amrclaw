@@ -123,7 +123,11 @@ subroutine intfil(val,mi,mj,time,flaguse,nrowst,ncolst,ilo,ihi,jlo,jhi,level,nva
 
     integer :: patch_rect(4)
 
+#if (CLAW_REAL == 8) 
     real(CLAW_REAL), parameter :: t_epsilon = 1.0d-4
+#else
+    real(CLAW_REAL), parameter :: t_epsilon = 1.0d-3
+#endif
 
     ! Formats for error statements
     character(len=*), parameter :: missing_error = &

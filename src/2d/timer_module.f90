@@ -125,7 +125,7 @@ contains
     subroutine print_all_cpu_timers()
         implicit none
         integer :: i
-        double precision :: total_run_time
+        real(CLAW_REAL) :: total_run_time
 
         !$OMP MASTER
         total_run_time = real(cpu_timers(timer_total_run_time)%accumulated_time,kind=8) &

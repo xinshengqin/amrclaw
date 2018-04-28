@@ -305,16 +305,16 @@ recursive subroutine filrecur(level,nvar,valbig,aux,naux,t,mitot,mjtot, &
                  ducc = valp10 - valm10
                  du   = min(abs(dupc), abs(dumc))
                  du   = min(2.d0 * du, 0.5d0 * abs(ducc))
-                 fu = max(0.d0, sign(1.d0, dupc * dumc))
-                 uslope = du*sign(1.d0,ducc)*fu ! not really - should divide by h
+                 fu = max(0.d0, sign(real(1.d0,kind=CLAW_REAL), dupc * dumc))
+                 uslope = du*sign(real(1.d0,kind=CLAW_REAL),ducc)*fu ! not really - should divide by h
 
                  dvpc = valp01 - valc
                  dvmc = valc   - valm01
                  dvcc = valp01 - valm01
                  dv   = min(abs(dvpc), abs(dvmc))
                  dv   = min(2.d0 * dv, 0.5d0 * abs(dvcc))
-                 fv = max(0.d0,sign(1.d0, dvpc * dvmc))
-                 vslope = dv*sign(1.d0,dvcc)*fv ! but faster to put in eta above
+                 fv = max(0.d0,sign(real(1.d0,kind=CLAW_REAL), dvpc * dvmc))
+                 vslope = dv*sign(real(1.d0,kind=CLAW_REAL),dvcc)*fv ! but faster to put in eta above
 
                  valint = valc + eta1 * uslope + eta2 * vslope
 
