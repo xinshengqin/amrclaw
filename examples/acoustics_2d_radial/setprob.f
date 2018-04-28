@@ -21,7 +21,7 @@ c     # Density and bulk modulus:
 c
 c     # Compute sound speed and impendance:
 
-      cc = dsqrt(bulk/rho)
+      cc = sqrt(bulk/rho)
       zz = rho*cc
 
       return

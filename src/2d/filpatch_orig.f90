@@ -225,17 +225,17 @@ recursive subroutine filrecur(level,nvar,valbig,aux,naux,t,mx,my, &
                         ducc = valp10 - valm10
                         du   = min(abs(dupc), abs(dumc))
                         du   = min(2.d0 * du, 0.5d0 * abs(ducc))
-                        fu = max(0.d0, sign(1.d0, dupc * dumc))
+                        fu = max(0.d0, sign(real(1.d0,kind=CLAW_REAL), dupc * dumc))
         
                         dvpc = valp01 - valc
                         dvmc = valc   - valm01
                         dvcc = valp01 - valm01
                         dv   = min(abs(dvpc), abs(dvmc))
                         dv   = min(2.d0 * dv, 0.5d0 * abs(dvcc))
-                        fv = max(0.d0,sign(1.d0, dvpc * dvmc))
+                        fv = max(0.d0,sign(real(1.d0,kind=CLAW_REAL), dvpc * dvmc))
 
-                        valint = valc + eta1 * du * sign(1.d0, ducc) * fu &
-                                      + eta2 * dv * sign(1.d0, dvcc) * fv
+                        valint = valc + eta1 * du * sign(real(1.d0,kind=CLAW_REAL), ducc) * fu &
+                                      + eta2 * dv * sign(real(1.d0,kind=CLAW_REAL), dvcc) * fv
 
 
                         valbig(n,i_fine+nrowst-1,j_fine+ncolst-1) = valint

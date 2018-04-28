@@ -10,8 +10,9 @@ c
       subroutine advanc (level,nvar,dtlevnew,vtime,naux)
 c
       use amr_module
-      implicit real(CLAW_REAL) (a-h,o-z)
       use timer_module
+
+      implicit real(CLAW_REAL) (a-h,o-z)
 
 
       logical    vtime

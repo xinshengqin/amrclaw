@@ -134,7 +134,7 @@ c        # second order corrections:
             do 119 mw=1,mwaves
 c
                if (use_fwaves) then
-                   abs_sign = sign(1.d0,s(mw,i))
+                   abs_sign = sign(real(1.d0,kind=CLAW_REAL),s(mw,i))
                  else
                    abs_sign = abs(s(mw,i))
                  endif
