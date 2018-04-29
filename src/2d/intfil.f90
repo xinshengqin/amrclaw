@@ -126,7 +126,7 @@ subroutine intfil(val,mi,mj,time,flaguse,nrowst,ncolst,ilo,ihi,jlo,jhi,level,nva
 #if (CLAW_REAL == 8) 
     real(CLAW_REAL), parameter :: t_epsilon = 1.0d-4
 #else
-    real(CLAW_REAL), parameter :: t_epsilon = 1.0d-3
+    real(CLAW_REAL), parameter :: t_epsilon = 1.0d-1
 #endif
 
     ! Formats for error statements
