@@ -48,7 +48,7 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
       common /comxyt/ dtcom,dxcom,dycom,tcom,icom,jcom
 
-      parameter (msize=maxd+4)
+      parameter (msize=max1d+4)
       parameter (mwork=msize*(maxvar*maxvar + 13*maxvar + 3*maxaux +2))
 
       dimension q(nvar,mitot,mjtot)
