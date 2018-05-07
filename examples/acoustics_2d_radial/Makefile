@@ -21,19 +21,15 @@ PLOTDIR = _plots                    # Directory for plots
 
 OVERWRITE ?= True                   # False ==> make a copy of OUTDIR first
 
-## Whether to use double precision floating number  in the computation
-USE_DOUBLE_PRECISION = FALSE
-# USE_DOUBLE_PRECISION = TRUE
-
-## enable OpenMP?
-USE_OPENMP = FALSE
-# USE_OPENMP = TRUE
-
 # Environment variable FC should be set to fortran compiler, e.g. gfortran
 
-# FC = pgfortran
 # Compiler flags can be specified here or set as an environment variable
-FFLAGS ?= 
+FFLAGS ?=  
+
+
+USE_OPENMP = TRUE
+USE_DOUBLE_PRECISION = FALSE
+FC = ftn
 
 # ---------------------------------
 # package sources for this program:
