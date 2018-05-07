@@ -64,7 +64,7 @@ program amr2
     use amr_module, only: checkpt_style, checkpt_interval, tchk, nchkpt
     use amr_module, only: rstfile, check_a
 
-    use amr_module, only: maxd, maxvar, maxlv
+    use amr_module, only: max1d, maxvar, maxlv
 
     use amr_module, only: method, mthlim, use_fwaves, numgrids
     use amr_module, only: nghost, mwaves, mcapa, auxtype, dimensional_split
@@ -329,12 +329,12 @@ program amr2
     read(inunit,*)
 
     do i=1,mxnest-1
-        if ((intratx(i) > maxd) .or. (intraty(i) > maxd)) then 
+        if ((intratx(i) > max1d) .or. (intraty(i) > max1d)) then 
             print *, ""
             format_string = "(' *** Error: Refinement ratios must be no " // &
-                            "larger than maxd = ',i5,/,'     (set maxd" // &
+                            "larger than max1d = ',i5,/,'     (set max1d" // &
                             " in amr_module.f90)')"
-            print format_string, maxd
+            print format_string, max1d
             stop
         endif
     enddo

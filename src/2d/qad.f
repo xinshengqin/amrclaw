@@ -41,15 +41,15 @@ c      # in rp2, but shouldn't matter since wave is not used in qad
 c      # and for other arrays it is only the last parameter that is wrong
 c      #  ok as long as meqn, mwaves < maxvar
 
-       parameter (maxdp1 = maxd+1)
-       dimension ql(nvar,maxdp1),    qr(nvar,maxdp1)
-       dimension wave(nvar,mwaves,maxdp1), s(mwaves,maxdp1)
-       dimension amdq(nvar,maxdp1),  apdq(nvar,maxdp1)
-       dimension auxl(maxaux*maxdp1),  auxr(maxaux*maxdp1)
+       parameter (max1dp1 = max1d+1)
+       dimension ql(nvar,max1dp1),    qr(nvar,max1dp1)
+       dimension wave(nvar,mwaves,max1dp1), s(mwaves,max1dp1)
+       dimension amdq(nvar,max1dp1),  apdq(nvar,max1dp1)
+       dimension auxl(maxaux*max1dp1),  auxr(maxaux*max1dp1)
 c
 c  WARNING: auxl,auxr dimensioned at max possible, but used as if
-c  they were dimensioned as the real maux by maxdp1. Would be better
-c  of course to dimension by maux by maxdp1 but this wont work if maux=0
+c  they were dimensioned as the real maux by max1dp1. Would be better
+c  of course to dimension by maux by max1dp1 but this wont work if maux=0
 c  So need to access using your own indexing into auxl,auxr.
        iaddaux(iaux,i) = iaux + maux*(i-1)
 
@@ -126,7 +126,7 @@ c                # from the cell corresponding  to q
          endif
        endif
  
-       call rpn2(1,maxdp1-2*nghost,nvar,mwaves,maux,nghost,
+       call rpn2(1,max1dp1-2*nghost,nvar,mwaves,maux,nghost,
      .              nc+1-2*nghost,ql,qr,auxl,auxr,wave,s,amdq,apdq)
 c
 c we have the wave. for side 1 add into sdflxm
@@ -204,7 +204,7 @@ c                # preserves conservation in incompressible flow:
                 enddo
          endif
        endif
-       call rpn2(2,maxdp1-2*nghost,nvar,mwaves,maux,nghost,
+       call rpn2(2,max1dp1-2*nghost,nvar,mwaves,maux,nghost,
      .              nr+1-2*nghost,ql,qr,auxl,auxr,wave,s,amdq,apdq)
 c
 c we have the wave. for side 2. add into sdflxp
@@ -265,7 +265,7 @@ c                # preserves conservation in incompressible flow:
             write(dbugunit,4101) i,ql(1,i),qr(1,i)
             enddo
        endif
-       call rpn2(1,maxdp1-2*nghost,nvar,mwaves,maux,nghost,
+       call rpn2(1,max1dp1-2*nghost,nvar,mwaves,maux,nghost,
      .              nc+1-2*nghost,ql,qr,auxl,auxr,wave,s,amdq,apdq)
 c
 c we have the wave. for side 3 add into sdflxp
@@ -331,7 +331,7 @@ c                # preserves conservation in incompressible flow:
             write(dbugunit,4101) i, ql(1,i),qr(1,i)
             enddo
        endif
-       call rpn2(2,maxdp1-2*nghost,nvar,mwaves,maux,nghost,
+       call rpn2(2,max1dp1-2*nghost,nvar,mwaves,maux,nghost,
      .              nr+1-2*nghost,ql,qr,auxl,auxr,wave,s,amdq,apdq)
 c
 c we have the wave. for side 4. add into sdflxm

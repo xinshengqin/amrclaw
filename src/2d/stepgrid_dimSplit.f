@@ -31,7 +31,7 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       implicit real(CLAW_REAL) (a-h,o-z)
       external rpn2
 
-      parameter (msize=maxd+4)
+      parameter (msize=max1d+4)
       parameter (mwork=msize*(maxvar*maxvar + 13*maxvar + 3*maxaux +2))
 
       dimension q(nvar,mitot,mjtot)
