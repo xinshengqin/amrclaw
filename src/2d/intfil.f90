@@ -126,7 +126,7 @@ subroutine intfil(val,mi,mj,time,flaguse,nrowst,ncolst,ilo,ihi,jlo,jhi,level,nva
 #if (CLAW_REAL == 8) 
     real(CLAW_REAL), parameter :: t_epsilon = 1.0d-4
 #else
-    real(CLAW_REAL), parameter :: t_epsilon = 1.0d-1
+    real(CLAW_REAL), parameter :: t_epsilon = 1.0d-4
 #endif
 
     ! Formats for error statements
@@ -199,13 +199,15 @@ subroutine intfil(val,mi,mj,time,flaguse,nrowst,ncolst,ilo,ihi,jlo,jhi,level,nva
             alphai = 1.d0 - alphac
 
             if ((alphai < -t_epsilon) .or. (alphai > 1.d0 + t_epsilon)) then
+                print *,"dt: ", dt
                 write(outunit,missing_error) time, mptr, level
                 print missing_error, time, mptr, level
                 write(outunit,'(A,E24.16)') 'Line 80', dt
                 write(outunit,time_error) patch_rect,mptr,level,time,rnode(timemult,mptr),alphai,t_epsilon
                 print time_error, patch_rect,mptr,level,time,rnode(timemult,mptr),alphai,t_epsilon
                 call outtre(mstart,.false.,nvar,naux)
-                stop
+                call abort()
+                ! stop
             endif
 
             ! Check if we should interpolate in time

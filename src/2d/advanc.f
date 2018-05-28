@@ -40,6 +40,9 @@ c                  adjusting fluxes for flux conservation step later
 c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c
 c get start time for more detailed timing by level
+      write(*,200) level
+200     format('At the begining of advanc, level =',i2)
+      
       call system_clock(clock_start,clock_rate)
       call cpu_time(cpu_start)
 
@@ -141,6 +144,14 @@ c
       timeStepgridCPU=timeStepgridCPU+cpu_finish-cpu_startStepgrid      
       
       cflmax = max(cflmax, cfl_level)
+
+      j = 1
+      levSt = listStart(level)
+      mptr = listOfGrids(levSt+j-1)
+      write(*,100)level, rnode(timemult,mptr)
+100     format(' AMRCLAW: level ',i2,' time = ',2e24.16)
+
+      call flush()
 
 c
       return

@@ -27,9 +27,9 @@ OVERWRITE ?= True                   # False ==> make a copy of OUTDIR first
 FFLAGS ?=  
 
 
-USE_OPENMP = TRUE
+USE_OPENMP = FALSE
 USE_DOUBLE_PRECISION = FALSE
-FC = ftn
+FC = gfortran
 
 # ---------------------------------
 # package sources for this program:

@@ -247,13 +247,16 @@ c         # rjl & mjb changed to cfl_level, 3/17/10
 
           timenew = tlevel(level)+possk(level)
           if (tprint) then
-              write(outunit,100)level,cfl_level,possk(level),timenew
+              write(outunit,100) level,cfl_level,possk(level)
+              write(outunit,901) tlevel(level),timenew
               endif
-          if (method(4).ge.level) then
-              write(6,100)level,cfl_level,possk(level),timenew
-              endif
+          ! if (method(4).ge.level) then
+          !     write(6,100)level,cfl_level,possk(level),timenew
+          !     endif
 100       format(' AMRCLAW: level ',i2,'  CFL = ',e10.3,
-     &           '  dt = ',e11.4,  '  final t = ',e13.6)
+     &           '  dt = ',2e24.16)
+901       format( 'old t = ',2e24.16, ' final t = ',2e24.16)
+        call flush()
 
 
 c        # to debug individual grid updates...
@@ -310,6 +313,18 @@ c      time for output?  done with the whole thing?
 c
  110      continue
           time    = time   + possk(1)
+          do lev = 1,lfine
+              tlevel(lev) = time
+              do j = 1, numgrids(lev)
+                 levSt = listStart(level)
+                 mptr   = listOfGrids(levSt+j-1)
+                 rnode(timemult,mptr) = time
+!                  if (mptr .eq. 95) then
+!                      write(outunit,125) rnode(timemult,mptr)
+! 125                  format('grid mptr time after reset:',2e24.16)
+!                  endif
+             enddo
+         enddo
           ncycle  = ncycle + 1
           call take_cpu_timer('conservation check', timer_conck)
           call cpu_timer_start(timer_conck)

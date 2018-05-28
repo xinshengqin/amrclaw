@@ -301,7 +301,7 @@ def setrun(claw_pkg='amrclaw'):
     # between a cell and each of its neighbors.
 
     # steps to take on each level L between regriddings of level L+1:
-    amrdata.regrid_interval = 2       
+    amrdata.regrid_interval = 2      
 
     # width of buffer zone around flagged points:
     # (typically the same as regrid_interval so waves don't escape):
@@ -333,7 +333,7 @@ def setrun(claw_pkg='amrclaw'):
     amrdata.pprint = False      # proj. of tagged points
     amrdata.rprint = False      # print regridding summary
     amrdata.sprint = False      # space/memory output
-    amrdata.tprint = False      # time step reporting each level
+    amrdata.tprint = True       # time step reporting each level
     amrdata.uprint = False      # update/upbnd reporting
     
     return rundata
