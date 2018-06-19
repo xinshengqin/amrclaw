@@ -313,10 +313,13 @@ c      time for output?  done with the whole thing?
 c
  110      continue
           time    = time   + possk(1)
+          ! Shawn: reset global time on each level and rnode(timemult,mptr) of all grids
+          ! to exactly the same time.
+          ! With this, the issue in intfil goes away.
           do lev = 1,lfine
               tlevel(lev) = time
               do j = 1, numgrids(lev)
-                 levSt = listStart(level)
+                 levSt = listStart(lev)
                  mptr   = listOfGrids(levSt+j-1)
                  rnode(timemult,mptr) = time
 !                  if (mptr .eq. 95) then
