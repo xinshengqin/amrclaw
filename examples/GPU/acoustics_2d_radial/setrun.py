@@ -67,8 +67,8 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.upper[1] = 1.000000e+00          # yupper
     
     # Number of grid cells:
-    clawdata.num_cells[0] = 200      # mx
-    clawdata.num_cells[1] = 200      # my
+    clawdata.num_cells[0] = 1000     # mx
+    clawdata.num_cells[1] = 1000      # my
     
 
     # ---------------
@@ -113,9 +113,9 @@ def setrun(claw_pkg='amrclaw'):
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
         # Can specify num_output_times = 0 for no output
-        clawdata.num_output_times = 10
+        clawdata.num_output_times = 0
         clawdata.tfinal = 1.0
-        clawdata.output_t0 = True  # output at initial (or restart) time?
+        clawdata.output_t0 = False  # output at initial (or restart) time?
         
     elif clawdata.output_style == 2:
         # Specify a list or numpy array of output times:
@@ -157,7 +157,7 @@ def setrun(claw_pkg='amrclaw'):
     
     # Initial time step for variable dt.  
     # (If dt_variable==0 then dt=dt_initial for all steps)
-    clawdata.dt_initial = 1.00000e-03
+    clawdata.dt_initial = 1.00000e-04
     
     # Max time step to be allowed if variable dt used:
     clawdata.dt_max = 1.000000e+99
@@ -179,8 +179,7 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.order = 2
     
     # Use dimensional splitting?
-    # clawdata.dimensional_split = 'unsplit'
-    clawdata.dimensional_split = 'godunov'
+    clawdata.dimensional_split = 'unsplit'
     
     # For unsplit method, transverse_waves can be 
     #  0 or 'none'      ==> donor cell (only normal solver used)
@@ -295,33 +294,24 @@ def setrun(claw_pkg='amrclaw'):
     
     # Flag for refinement using routine flag2refine:
     amrdata.flag2refine = True      # use this?
-    amrdata.flag2refine_tol = 0.05 # tolerance used in this routine
+    amrdata.flag2refine_tol = 0.01 # tolerance used in this routine
     # User can modify flag2refine to change the criterion for flagging.
     # Default: check maximum absolute difference of first component of q
     # between a cell and each of its neighbors.
 
     # steps to take on each level L between regriddings of level L+1:
-    amrdata.regrid_interval = 2       
+    amrdata.regrid_interval = 16
 
     # width of buffer zone around flagged points:
     # (typically the same as regrid_interval so waves don't escape):
-    amrdata.regrid_buffer_width  = 2
+    amrdata.regrid_buffer_width  = 16
 
     # clustering alg. cutoff for (# flagged pts) / (total # of cells refined)
     # (closer to 1.0 => more small grids may be needed to cover flagged cells)
-    amrdata.clustering_cutoff = 0.7
+    amrdata.clustering_cutoff = 0.9
 
     # print info about each regridding up to this level:
     amrdata.verbosity_regrid = 0      
-
-    # ---------------
-    # All parameters for GPU computing:
-    # ---------------
-
-    gpudata = rundata.gpudata
-    # which gpu you would like to use
-    # must between 0 and num_of_total_gpus-1
-    gpudata.which_gpu = 0
 
 
     # ---------------
