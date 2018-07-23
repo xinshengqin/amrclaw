@@ -4,12 +4,14 @@
 Two-dimensional acoustics with radially symmetric initial data
 ==============================================================
 
-Acoustics with radial symmetric initial conditions.  The solution should 
-remain radially symmetric.  First run the code in the 1drad subdirectory to 
-compute the "true solution" and then setplot.py contains code to produce a 
-scatter plot of the computed 2d pressure vs. distance from origin and compare 
-with the 1d solution.
+This example shows the setup in the benchmark used in the paper: Accelerating wave-propagation algorithms with adaptive mesh refinement using the Graphics Processing Unit (GPU).
+It is a 2D acoustics problem with radial symmetric initial conditions.  The solution should remain radially symmetric.  
 
-Three gauges are specified, Gauge 0 is at the origin and Gauges 1 and 2 are
-are both at radius 0.7, along the x-axis and along the diagonal.
-
+One should install Clawpack package by following the instructions on: http://www.clawpack.org/developers.html
+Then, each sub-module should be checked-out at the branches specified below in order to properly compile the code.
+* pyclaw: tag: v5.4.1
+* classic: tag: v5.4.1
+* visclaw: tag: v5.4.1
+* riemann: gpu_amr_paper_benchmark
+* clawutil: gpu_amr_paper_benchmark
+* amrclaw: gpu_amr_paper_benchmark
