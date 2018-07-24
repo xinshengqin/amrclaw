@@ -1,29 +1,35 @@
 #!/bin/bash
 
 echo "setting up pyclaw..."
-cd $CLAW/pyclaw && git checkout v5.4.1
+cd ./pyclaw && git checkout v5.4.1 && cd ../
 
 echo "setting up classic..."
-cd $CLAW/classic && git checkout v5.4.1
+cd ./classic && git checkout v5.4.1 && cd ../
 
 echo "setting up visclaw..."
-cd $CLAW/visclaw && git checkout v5.4.1
+cd ./visclaw && git checkout v5.4.1 && cd ../
+
+echo "setting up geoclaw..."
+cd ./geoclaw && git checkout v5.4.1 && cd ../
 
 
 echo "setting up riemann..."
-cd $CLAW/riemann && \
+cd ./riemann && \
 git remote add gpu https://github.com/xinshengqin/riemann.git && \
 git fetch gpu && \
-git checkout gpu_amr_paper_benchmark_tag
+git checkout gpu_amr_paper_benchmark_tag && \
+cd ..
 
 echo "setting up clawutil..."
-cd $CLAW/clawutil && \
+cd ./clawutil && \
 git remote add gpu https://github.com/xinshengqin/clawutil.git && \
 git fetch gpu && \
-git checkout gpu_amr_paper_benchmark_tag
+git checkout gpu_amr_paper_benchmark_tag && \
+cd ..
 
 echo "setting up amrclaw..."
-cd $CLAW/amrclaw && \
+cd ./amrclaw && \ 
 git remote add gpu https://github.com/xinshengqin/amrclaw.git && \
 git fetch gpu && \
-git checkout gpu_amr_paper_benchmark_tag
+git checkout gpu_amr_paper_benchmark_tag && \
+cd ..

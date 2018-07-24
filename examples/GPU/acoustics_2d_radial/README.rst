@@ -9,7 +9,7 @@ It is a 2D acoustics problem with radial symmetric initial conditions.  The solu
 
 One should install Clawpack package by following the instructions on: http://www.clawpack.org/developers.html#installation-instructions-for-developers
 
-After intalling Clawpack, add remote url to the sub-modules (if needed) and check out the tag as instructed below to properly compile the code.
+After intalling Clawpack, add remote url to the sub-modules (if needed) and check out the tag as instructed below to properly compile the code. Note that $CLAW is the root directory of Clawpack.
 
 * pyclaw: 
 
@@ -31,6 +31,13 @@ After intalling Clawpack, add remote url to the sub-modules (if needed) and chec
 .. code-block:: shell
 
   cd $CLAW/visclaw 
+  git checkout v5.4.1
+
+* geoclaw: 
+
+.. code-block:: shell
+
+  cd $CLAW/geoclaw 
   git checkout v5.4.1
 
 * riemann: 
