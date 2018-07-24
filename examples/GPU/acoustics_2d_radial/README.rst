@@ -46,7 +46,7 @@ After intalling Clawpack, add remote url to the sub-modules (if needed) and chec
 
   cd $CLAW/riemann 
   git remote add gpu https://github.com/xinshengqin/riemann.git
-  git fetch gpu
+  git fetch gpu --no-tags refs/tags/gpu_amr_paper_benchmark_tag:refs/tags/gpu_amr_paper_benchmark_tag
   git checkout gpu_amr_paper_benchmark_tag
 
 * clawutil: 
@@ -55,7 +55,7 @@ After intalling Clawpack, add remote url to the sub-modules (if needed) and chec
 
   cd $CLAW/clawutil 
   git remote add gpu https://github.com/xinshengqin/clawutil.git
-  git fetch gpu
+  git fetch gpu --no-tags refs/tags/gpu_amr_paper_benchmark_tag:refs/tags/gpu_amr_paper_benchmark_tag
   git checkout gpu_amr_paper_benchmark_tag
 
 * amrclaw:
@@ -64,7 +64,7 @@ After intalling Clawpack, add remote url to the sub-modules (if needed) and chec
 
   cd $CLAW/amrclaw 
   git remote add gpu https://github.com/xinshengqin/amrclaw.git
-  git fetch gpu
+  git fetch gpu --no-tags refs/tags/gpu_amr_paper_benchmark_tag:refs/tags/gpu_amr_paper_benchmark_tag
   git checkout gpu_amr_paper_benchmark_tag
 
 
