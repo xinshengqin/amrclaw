@@ -7,6 +7,7 @@ COMMON_MODULES += \
   $(AMRLIB)/amr_module.f90 \
   $(AMRLIB)/gauges_module.f90 \
   $(AMRLIB)/regions_module.f90 \
+  $(AMRLIB)/helper_module.f90 \
   $(AMRLIB)/timer_module.f90
 
 COMMON_SOURCES += \

@@ -8,6 +8,7 @@ c
       use gauges_module, only: setbestsrc, num_gauges
       use gauges_module, only: print_gauges_and_reset_nextLoc 
       use timer_module
+      use helper_module
 
       implicit real(CLAW_REAL) (a-h,o-z)
 c     include  "call.i"
@@ -240,7 +241,12 @@ c
  90       continue
 
 
+
+          call take_cpu_timer("Advance level "//toString(level), 
+     &      timer_advanc_start+level-1)
+          call cpu_timer_start(timer_advanc_start+level-1)
           call advanc(level,nvar,dtlevnew,vtime,naux)
+          call cpu_timer_stop(timer_advanc_start+level-1)
 
 c         # rjl modified 6/17/05 to print out *after* advanc and print cfl
 c         # rjl & mjb changed to cfl_level, 3/17/10
