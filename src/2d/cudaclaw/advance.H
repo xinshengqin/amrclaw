@@ -29,6 +29,7 @@
 #define DRY_TOL 0.001 // the dry_tolerance parameter in setrun.py 
 #endif
 
+#if (CLAW_REAL == 8) 
 __device__ static double atomicMax(double* address, double val)
 {
     unsigned long long* address_as_ull = (unsigned long long*) address;
@@ -40,6 +41,19 @@ __device__ static double atomicMax(double* address, double val)
     } while (assumed != old);
     return __longlong_as_double(old);
 }
+#else
+__device__ static float atomicMax(float* address, float val)
+{
+    unsigned int* address_as_ull = (unsigned int*) address;
+    unsigned int old = *address_as_ull, assumed;
+    do {
+        assumed = old;
+        old = ::atomicCAS(address_as_ull, assumed,
+            __float_as_uint(::fmax(val,  __uint_as_float(assumed))));
+    } while (assumed != old);
+    return  __uint_as_float(old);
+}
+#endif
 
 
 template<const int numStates, const int numWaves, const int blockSizeX, const int blockSizeY>
