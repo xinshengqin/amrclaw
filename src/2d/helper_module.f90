@@ -10,7 +10,7 @@ contains
         !   "Convert an integer to string."
         integer, intent(in) :: k
         character(len=20) :: str
-        write (str, *) k
+        write (str, '(I20)') k
         str = adjustl(str)
     end function toString1
 
