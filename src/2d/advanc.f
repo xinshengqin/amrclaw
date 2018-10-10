@@ -54,6 +54,8 @@ c
       call system_clock(clock_startBound,clock_rate)
       call cpu_time(cpu_startBound)
 
+      call take_cpu_timer("Filling ghost cells", timer_bound)
+      call cpu_timer_start(timer_bound)
 
 c     maxthreads initialized to 1 above in case no openmp
 !$    maxthreads = omp_get_max_threads()
@@ -84,6 +86,7 @@ c
 
        end do
 !$OMP END PARALLEL DO
+      call cpu_timer_stop(timer_bound)
       call system_clock(clock_finishBound,clock_rate)
       call cpu_time(cpu_finishBound)
       timeBound = timeBound + clock_finishBound - clock_startBound
