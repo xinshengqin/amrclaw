@@ -578,6 +578,8 @@ program amr2
     call cpu_time(cpu_start)
     call system_clock(clock_start,clock_rate)
 
+    call take_cpu_timer("Total run time", timer_total_run_time)
+    call cpu_timer_start(timer_total_run_time)
     ! --------------------------------------------------------
     !  Tick is the main routine which drives the computation:
     ! --------------------------------------------------------
@@ -585,6 +587,7 @@ program amr2
     call tick(nvar,cut,nstart,vtime,time,naux,t0,rest,dt_max)
     ! --------------------------------------------------------
 
+    call cpu_timer_stop(timer_total_run_time)
     call cpu_time(cpu_finish)
 
     !output timing data
