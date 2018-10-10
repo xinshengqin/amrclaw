@@ -49,8 +49,6 @@ c ::::::::::::::::::::::::::::::::::::;::::::::::::::::::::::::::
 c
       call system_clock(tick_clock_start,tick_clock_rate)
       call cpu_time(tick_cpu_start)
-      call take_cpu_timer("Total run time", timer_total_run_time)
-      call cpu_timer_start(timer_total_run_time)
 
 
       ncycle         = nstart
@@ -383,7 +381,6 @@ c
 
 c ## tick timing moved here so can be saved in checkpoint file 
 c
-      call cpu_timer_stop(timer_total_run_time)
       call system_clock(tick_clock_finish,tick_clock_rate)
       call cpu_time(tick_cpu_finish)
       timeTick = timeTick + tick_clock_finish - tick_clock_start 
