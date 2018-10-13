@@ -62,10 +62,11 @@ module timer_module
     integer, parameter :: timer_conck = 14
     integer, parameter :: timer_memory = 15
     integer, parameter :: timer_advanc_all_levels = 16 
+    integer, parameter :: timer_birect = 17 
     ! time for calling advanc function
     ! starting from timer_advanc_start, the ids are reserved
     ! for timing level 1,2,3,4 ...
-    integer, parameter :: timer_advanc_start = 17 
+    integer, parameter :: timer_advanc_start = 20
 
 contains
     subroutine take_cpu_timer(timer_name_, timer_id)
@@ -101,6 +102,10 @@ contains
             cpu_timers(timer_id)%running = .true.
             cpu_timers(timer_id)%n_calls = cpu_timers(timer_id)%n_calls + 1
             call system_clock(cpu_timers(timer_id)%start_time, clock_rate)
+!             print *, "clock_rate: ", clock_rate
+!             print *, "count_max: ", count_max
+!             print *, "start_time: ", cpu_timers(timer_id)%start_time
+!             stop
         else
             print *, "Warning: Trying to start a timer that's already running"
         endif
@@ -117,6 +122,15 @@ contains
         endif
         if (cpu_timers(timer_id)%running) then
             call system_clock(cpu_timers(timer_id)%stop_time, clock_rate)
+            if ( (cpu_timers(timer_id)%stop_time - cpu_timers(timer_id)%start_time) &
+                 < 0 ) then
+                 print *, "negative time accumulated in timer:"
+                 print *, timer_id
+                 print *, adjustl(cpu_timers(timer_id)%timer_name)
+                 print *, "start_time: ", cpu_timers(timer_id)%start_time
+                 print *, "stop_time: ", cpu_timers(timer_id)%stop_time
+                 stop
+            endif
             cpu_timers(timer_id)%accumulated_time = cpu_timers(timer_id)%accumulated_time + &
                 cpu_timers(timer_id)%stop_time - cpu_timers(timer_id)%start_time
             cpu_timers(timer_id)%running = .false.
