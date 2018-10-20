@@ -102,10 +102,6 @@ contains
             cpu_timers(timer_id)%running = .true.
             cpu_timers(timer_id)%n_calls = cpu_timers(timer_id)%n_calls + 1
             call system_clock(cpu_timers(timer_id)%start_time, clock_rate)
-!             print *, "clock_rate: ", clock_rate
-!             print *, "count_max: ", count_max
-!             print *, "start_time: ", cpu_timers(timer_id)%start_time
-!             stop
         else
             print *, "Warning: Trying to start a timer that's already running"
         endif
