@@ -41,7 +41,7 @@ c      # in rp2, but shouldn't matter since wave is not used in qad
 c      # and for other arrays it is only the last parameter that is wrong
 c      #  ok as long as meqn, mwaves < maxvar
 
-       parameter (max1dp1 = max1d+1)
+       parameter (max1dp1 = max1d*max1d/10+2)
        dimension ql(nvar,max1dp1),    qr(nvar,max1dp1)
        dimension wave(nvar,mwaves,max1dp1), s(mwaves,max1dp1)
        dimension amdq(nvar,max1dp1),  apdq(nvar,max1dp1)
