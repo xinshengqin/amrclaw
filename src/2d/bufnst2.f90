@@ -127,7 +127,7 @@
 
       if (eprint .and. maxthreads .eq. 1) then
          write(outunit,*)" flagged points after buffering on level", &
-             lcheck," grid ",mptr," (WITHOUT buff cells))"
+                          lcheck," grid ",mptr," (WITHOUT buff cells))"
          do 51 j = mjbuff-mbuff, mbuff+1, -1
            write(outunit,100)(int(alloc(iadd_bufnst2(i,j,locamrflags,mibuff))), &
                                  i=mbuff+1, mibuff-mbuff)

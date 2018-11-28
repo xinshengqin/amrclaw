@@ -5,6 +5,8 @@ c
 c
       use amr_module
       implicit real(CLAW_REAL) (a-h,o-z)
+      use adjoint_module, only : adjoint_flagging
+      use adjointsup_module, only: errf1a
 c
 c   ### changed to stack based storage 2/23/13 
 c   ### and broken into smaller routines to minimize 
@@ -54,9 +56,16 @@ c     ## by flagregions2 or flag2refine so make sure not to overwrite
       locamrflags = node(storeflags, mptr)    
       mbuff = max(nghost,ibuff+1)  
       mibuff = nx + 2*mbuff 
-      mjbuff = ny + 2*mbuff 
-      call errf1(alloc(locbig),nvar,valbgc,mptr,mi2tot,mj2tot,
+      mjbuff = ny + 2*mbuff
+      if (adjoint_flagging) then
+          call errf1a(alloc(locbig),nvar,valbgc,mptr,mi2tot,mj2tot,
+     1           mitot,mjtot,alloc(locamrflags),mibuff,mjbuff,
+     1           alloc(locaux),naux,auxbgc)
+      else
+          call errf1(alloc(locbig),nvar,valbgc,mptr,mi2tot,mj2tot,
      1           mitot,mjtot,alloc(locamrflags),mibuff,mjbuff)
+      endif
+
 
 c
       return

@@ -9,6 +9,8 @@ COMMON_MODULES += \
   $(AMRLIB)/regions_module.f90 \
   $(AMRLIB)/helper_module.f90 \
   $(AMRLIB)/timer_module.f90
+  $(AMRLIB)/adjoint_module.f90 \
+  $(AMRLIB)/adjointsup_module.f90 
 
 COMMON_SOURCES += \
   $(AMRLIB)/qinit.f \
@@ -34,7 +36,7 @@ COMMON_SOURCES += \
   $(AMRLIB)/birect.f90 \
   $(AMRLIB)/cleanup.f \
   $(AMRLIB)/colate2.f \
-  $(AMRLIB)/bufnst2.f \
+  $(AMRLIB)/bufnst2.f90 \
   $(AMRLIB)/flag2refine2.f90 \
   $(AMRLIB)/flagregions2.f90 \
   $(AMRLIB)/errest.f \
@@ -102,6 +104,7 @@ COMMON_SOURCES += \
   $(AMRLIB)/check.f \
   $(AMRLIB)/restrt.f \
   $(AMRLIB)/quick_sort1.f \
+  $(AMRLIB)/quick_sort_reals.f \
   $(AMRLIB)/opendatafile.f \
   $(AMRLIB)/addflags.f \
   $(AMRLIB)/domgrid.f \
