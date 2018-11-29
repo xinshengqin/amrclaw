@@ -16,6 +16,9 @@
 ! =========================================================================
 module timer_module
     use amr_module
+#ifdef _OPENMP
+    use omp_lib
+#endif
 
     implicit none
     save
@@ -23,18 +26,24 @@ module timer_module
     public
 
     ! initialized to be 0
-    integer, parameter :: max_cpu_timers = 30
-    integer(kind=8) :: clock_rate
+    integer, parameter :: max_cpu_timers = 40
+    integer(kind=CLAW_REAL) :: clock_rate
     character(len=364) :: format_string
 
     type timer_type
         character(len=364) :: timer_name
         logical :: used = .false.
         logical :: running = .false.
-        integer(kind=8) :: start_time = 0
-        integer(kind=8) :: stop_time = 0
-        integer(kind=8) :: accumulated_time = 0 ! in clock_cycle, not seconds
-        integer(kind=8) :: n_calls = 0 ! how many times this section is called
+#ifdef _OPENMP
+        real(kind=CLAW_REAL) :: start_time = 0.0
+        real(kind=CLAW_REAL) :: stop_time = 0.0
+        real(kind=CLAW_REAL) :: accumulated_time = 0.0 
+#else
+        integer(kind=CLAW_REAL) :: start_time = 0
+        integer(kind=CLAW_REAL) :: stop_time = 0
+        integer(kind=CLAW_REAL) :: accumulated_time = 0 ! in clock_cycle, not seconds
+#endif
+        integer(kind=CLAW_REAL) :: n_calls = 0 ! how many times this section is called
     end type timer_type
 
 
@@ -66,7 +75,7 @@ module timer_module
     ! time for calling advanc function
     ! starting from timer_advanc_start, the ids are reserved
     ! for timing level 1,2,3,4 ...
-    integer, parameter :: timer_advanc_start = 20
+    integer, parameter :: timer_advanc_start = 30
 
 contains
     subroutine take_cpu_timer(timer_name_, timer_id)
@@ -101,7 +110,11 @@ contains
         if (.not. cpu_timers(timer_id)%running) then
             cpu_timers(timer_id)%running = .true.
             cpu_timers(timer_id)%n_calls = cpu_timers(timer_id)%n_calls + 1
+#ifdef _OPENMP
+            cpu_timers(timer_id)%start_time = omp_get_wtime()
+#else
             call system_clock(cpu_timers(timer_id)%start_time, clock_rate)
+#endif
         else
             print *, "Warning: Trying to start a timer that's already running"
         endif
@@ -117,12 +130,15 @@ contains
             print *, "Warning: Trying to use a non-initialized cpu timer."
         endif
         if (cpu_timers(timer_id)%running) then
+#ifdef _OPENMP
+            cpu_timers(timer_id)%stop_time = omp_get_wtime()
+#else
             call system_clock(cpu_timers(timer_id)%stop_time, clock_rate)
+#endif
             if ( (cpu_timers(timer_id)%stop_time - cpu_timers(timer_id)%start_time) &
                  < 0 ) then
                  print *, "negative time accumulated in timer:"
-                 print *, timer_id
-                 print *, adjustl(cpu_timers(timer_id)%timer_name)
+                 print *, timer_id, adjustl(cpu_timers(timer_id)%timer_name)
                  print *, "start_time: ", cpu_timers(timer_id)%start_time
                  print *, "stop_time: ", cpu_timers(timer_id)%stop_time
                  stop
@@ -142,8 +158,12 @@ contains
         real(CLAW_REAL) :: total_run_time
 
         !$OMP MASTER
-        total_run_time = real(cpu_timers(timer_total_run_time)%accumulated_time,kind=8) &
-            /real(clock_rate,kind=8) 
+#ifdef _OPENMP
+        total_run_time = cpu_timers(timer_total_run_time)%accumulated_time
+#else
+        total_run_time = real(cpu_timers(timer_total_run_time)%accumulated_time,kind=CLAW_REAL) &
+            /real(clock_rate,kind=CLAW_REAL) 
+#endif
 
         format_string="('Elapsed wall time recorded by all cpu timers: ')"
         write(*,format_string)
@@ -162,14 +182,25 @@ contains
                 write(*,format_string)
                 write(outunit,format_string)
                 format_string="(1f15.3,'           ',1f15.2,'        ',i9)"
+#ifdef _OPENMP
                 write(*,format_string) &
-                    real(cpu_timers(i)%accumulated_time,kind=8)/real(clock_rate,kind=8), &
-                    real(cpu_timers(i)%accumulated_time,kind=8)/real(clock_rate,kind=8)/total_run_time*100, &
+                    cpu_timers(i)%accumulated_time, &
+                    cpu_timers(i)%accumulated_time/total_run_time*100, &
                     cpu_timers(i)%n_calls
                 write(outunit,format_string) &
-                    real(cpu_timers(i)%accumulated_time,kind=8)/real(clock_rate,kind=8), &
-                    real(cpu_timers(i)%accumulated_time,kind=8)/real(clock_rate,kind=8)/total_run_time*100, &
+                    cpu_timers(i)%accumulated_time, &
+                    cpu_timers(i)%accumulated_time/total_run_time*100, &
                     cpu_timers(i)%n_calls
+#else
+                write(*,format_string) &
+                    real(cpu_timers(i)%accumulated_time,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL), &
+                    real(cpu_timers(i)%accumulated_time,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL)/total_run_time*100, &
+                    cpu_timers(i)%n_calls
+                write(outunit,format_string) &
+                    real(cpu_timers(i)%accumulated_time,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL), &
+                    real(cpu_timers(i)%accumulated_time,kind=CLAW_REAL)/real(clock_rate,kind=CLAW_REAL)/total_run_time*100, &
+                    cpu_timers(i)%n_calls
+#endif
                 format_string = "(' ')"
                 write(*,format_string)
                 write(outunit,format_string)
